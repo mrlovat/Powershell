@@ -1,0 +1,15 @@
+#append new csv (without first line) to files with same name in another folder and move to processed folder. DO NOT RUN IF $NewPath IS EMPTY
+$NewPath="C:\Users\Public\Documents\DS - DataSources\ToAppend\"
+$Oldpath="C:\Users\Public\Documents\DS - DataSources\"
+$NewFiles=Get-ChildItem $NewPath -Filter *.csv
+$ProcessedPath="C:\Users\Public\Documents\DS - DataSources\Appended\"
+
+foreach($csvfile in $NewFiles)
+{
+$Source=Join-Path $NewPath $csvfile
+$Destination=Join-Path $OldPath $csvfile
+
+Add-Content $Destination -Value (Get-Content $Source | Select-Object -Skip 1) 
+Move-Item -Path $Source -Destination $ProcessedPath -force
+Write-Output ($Source + ' (without headers) has been appended to ' + $Destination + ' and then moved to ' + $ProcessedPath)
+}

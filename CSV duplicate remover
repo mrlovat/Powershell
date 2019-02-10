@@ -1,0 +1,4 @@
+#Take a csv file, sort it, remove duplicates and overwrite
+
+$in="C:\Users\Public\Documents\DS - DataSources\test.csv"
+Get-Content $in | Sort-Object -Unique | set-content $in

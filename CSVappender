@@ -1,4 +1,5 @@
 #append new csv (without first line) to files with same name in another folder and move to processed folder. DO NOT RUN IF $NewPath IS EMPTY
+
 $NewPath="C:\Users\Public\Documents\DS - DataSources\ToAppend\"
 $Oldpath="C:\Users\Public\Documents\DS - DataSources\"
 $NewFiles=Get-ChildItem $NewPath -Filter *.csv

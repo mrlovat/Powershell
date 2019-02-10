@@ -1,0 +1,6 @@
+#Read a csv file with a date column; remove records after certain date and overwrite original file.
+#Useful if you found a mistake in a recent import and need to remove some lines
+$Path="C:\Users\Public\Documents\DS - DataSources\Temp"
+$csvfile="test.csv"
+$Source=Join-Path $Path $csvfile
+Get-Content $Source | Where {Get-Date $row.Date -lt '17/12/2018'} | set-content $Source

@@ -1,1 +1,1 @@
-This is a powershell script to append two csv files with the same name from two different folders
+This is a collection of powershell scripts I use on csv files to merge, sort, dedupe and other common operations

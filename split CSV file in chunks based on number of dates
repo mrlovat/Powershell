@@ -1,0 +1,14 @@
+#split csv file in smaller 10 days chunks
+$in = Import-Csv "C:\Users\filetobesplitted.csv"
+$MinMax=$in | Measure-object -Property "Day Dt" -Min -Max 
+$MinDate=$MinMax | Select-Object -expand Minimum | Get-Date 
+$MaxDate=$MinMax | Select-Object -expand Maximum | Get-Date 
+$StartDate = $MinDate #for the first loop the start date equals the min date found in the source file
+while ($StartDate -lt $MaxDate) {
+$EndDate = if ($StartDate.AddDays(10) -lt $MaxDate) {$StartDate.AddDays(10)} else {$MaxDate}
+$out="C:\Users\OutputFileName" + ${StartDate}.ToString("_yyyyMMdd") + ${EndDate}.ToString("_yyyyMMdd") + ".csv" #set output file name
+$in | Where-Object {[DateTime]$_.'Day Dt' -ge $StartDate -AND [DateTime]$_.'Day Dt' -le $EndDate} | ConvertTo-Csv -NoTypeInformation `
+    | % {$_ -replace  '\G(?<start>^|,)(("(?<output>[^,"]*?)"(?=,|$))|(?<output>".*?(?<!")("")*?"(?=,|$)))','${start}${output}'} | Out-File $Out -Force utf8
+$StartDate = $StartDate.AddDays(11)
+$EndDate = $EndDate.AddDays(11)
+}

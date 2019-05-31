@@ -1,0 +1,12 @@
+#Upload tab delimited from to sql server table with same name as CSV file name but without the characters after the _
+$SourceFolder="C:\Users\Public\Documents\OneDrive\AppendtoSQL\"
+$ProcessedFolder="C:\Users\Public\Documents\DS\Appended\"
+$NewFiles=Get-ChildItem $SourceFolder -Filter *.csv
+foreach($FileName in $NewFiles)
+{
+$Source=Join-Path $SourceFolder $FileName
+$DestTable = $FileName | % {$_.BaseName.split("_")[0]} #the destination table has the same name as the file but without extension and without DC
+bcp [PlayDigital_Performance].[dbo].[$DestTable] in $Source -S SERVERNAME -w -T  #Trusted connection, unicode
+Move-Item -Path $Source -Destination $ProcessedFolder -force
+Write-Host "$FileName Processed" -fore green
+}
